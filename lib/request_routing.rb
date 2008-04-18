@@ -11,6 +11,8 @@ module ActionController
           if TESTABLE_REQUEST_METHODS.include? method
             result << if value.is_a? Regexp
               "conditions[#{method.inspect}] =~ env[#{method.inspect}]"
+            elsif value.is_a? Array # :subdomain => [false, 'signup', 'chinchilla']
+              "(conditions[#{method.inspect}].first == conditions[#{method.inspect}].include?(env[#{method.inspect}]))"
             else
               "conditions[#{method.inspect}] === env[#{method.inspect}]"
             end
