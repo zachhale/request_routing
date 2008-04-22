@@ -2,8 +2,8 @@ module ActionController
   module Routing
     class Route
       
-      TESTABLE_REQUEST_METHODS = [:subdomain, :domain, :method, :port, :remote_ip, 
-                                  :content_type, :accepts, :request_uri, :protocol]
+      TESTABLE_REQUEST_METHODS = [:subdomain, :full_subdomain, :domain, :method, :port, 
+                                  :remote_ip, :content_type, :accepts, :request_uri, :protocol]
       
       def recognition_conditions
         result = ["(match = #{Regexp.new(recognition_pattern).inspect}.match(path))"]
@@ -30,6 +30,7 @@ module ActionController
         { 
           :method => request.method,
           :subdomain => request.subdomains.first.to_s, 
+          :full_subdomain => request.subdomains.join('.').to_s, 
           :domain => request.domain, 
           :port => request.port, 
           :remote_ip => request.remote_ip, 
